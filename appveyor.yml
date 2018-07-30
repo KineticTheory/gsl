@@ -14,4 +14,4 @@ build_script:
   - cd build
   - cmake -G "Visual Studio 15 2017 Win64" -DGSL_INSTALL_MULTI_CONFIG=ON -DBUILD_SHARED_LIBS=ON -DMSVC_RUNTIME_DYNAMIC=ON  -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/../install %APPVEYOR_BUILD_FOLDER%
   - cmake --build . --config Debug --target install
-  - ctest -C Debug -j 2 --output-on-failures
+  - ctest -C Debug -j 2 --output-on-failure

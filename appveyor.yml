@@ -6,6 +6,7 @@ clone_depth: 3
 
 environment:
   OMP_NUM_THREADS: 4
+  
 
 build_script:
 # we start at $(APPVEYOR_BUILD_FOLDER) = c:\projects\ampl
@@ -14,6 +15,7 @@ build_script:
   - dir
   - set
   - mkdir build
+  - mkdir install
   - cd build
 # no MPI installed so force scalar builds.
   - cmake -G "Visual Studio 15 2017 Win64" -DGSL_INSTALL_MULTI_CONFIG=ON -DBUILD_SHARED_LIBS=ON -DMSVC_RUNTIME_DYNAMIC=ON  -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/install %APPVEYOR_BUILD_FOLDER%

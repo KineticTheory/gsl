@@ -576,6 +576,16 @@ if (MSVC_RUNTIME_DYNAMIC)
   endforeach()
 endif ()
 
+# Append compiler flags provided via environment variables.
+# E.g.: C_FLAGS="-Werror" cmake -G "Unix Makefiles" ../gsl
+foreach( lang C CXX )
+  if( DEFINED ENV{${lang}_FLAGS} )
+    string( APPEND CMAKE_${lang}_FLAGS " $ENV{${lang}_FLAGS}" )
+    message( STATUS "CMAKE_${lang}_FLAGS = ${CMAKE_${lang}_FLAGS}" )
+    # set( CMAKE_${lang}_FLAGS ${CMAKE_${lang}_FLAGS} CACHE STRING "Compiler flags" FORCE ) 
+  endif()
+endforeach()
+
 enable_testing()
 
 # Adds a GSL test. Usage:

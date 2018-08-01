@@ -309,7 +309,7 @@ endif ()
 
 include(CheckCSourceCompiles)
 
-# Check for inline.
+# Check for inline. (also check for __forceinline?)
 foreach (keyword inline __inline__ __inline)
   check_c_source_compiles("
     static ${keyword} void foo() { return 0; }
@@ -576,6 +576,16 @@ if (MSVC_RUNTIME_DYNAMIC)
   endforeach()
 endif ()
 
+# Append compiler flags provided via environment variables.
+# E.g.: C_FLAGS="-Werror" cmake -G "Unix Makefiles" ../gsl
+foreach( lang C CXX )
+  if( DEFINED ENV{${lang}_FLAGS} )
+    string( APPEND CMAKE_${lang}_FLAGS " $ENV{${lang}_FLAGS}" )
+    message( STATUS "CMAKE_${lang}_FLAGS = ${CMAKE_${lang}_FLAGS}" )
+    # set( CMAKE_${lang}_FLAGS ${CMAKE_${lang}_FLAGS} CACHE STRING "Compiler flags" FORCE ) 
+  endif()
+endforeach()
+
 enable_testing()
 
 # Adds a GSL test. Usage:
@@ -680,7 +690,7 @@ if (GSL_INSTALL OR NOT DEFINED GSL_INSTALL)
       install(TARGETS gsl gslcblas
         CONFIGURATIONS ${config}
         LIBRARY DESTINATION lib/${config}
-        RUNTIME DESTINATION bin/${config}
+        RUNTIME DESTINATION lib/${config}
         ARCHIVE DESTINATION lib/${config})
     endforeach ()
   else ()
